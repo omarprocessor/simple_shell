@@ -21,7 +21,9 @@ return (1);
 
 if (strcmp(vigezo[0], "exit") == 0)
 return (0);
-
+if (strcmp(vigezo[0], "env") == 0)
+chapisha_env();
+return (1);
 programu = tafuta_njia(vigezo[0]);
 
 if (programu == NULL)
