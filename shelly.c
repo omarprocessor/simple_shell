@@ -1,5 +1,6 @@
 #include "shelly.h"
 
+
 /**
  * execute_command - Forks a process and executes the command
  * @cmd: Command to execute
@@ -8,7 +9,10 @@ void execute_command(char *cmd)
 {
 pid_t pid;
 int status;
-char *argv[] = {cmd, NULL};
+char *argv[2]; /* Declare the argv array with two elements */
+
+argv[0] = cmd; /* Assign the command as the first argument */
+argv[1] = NULL; /* The last element is NULL */
 
 pid = fork();
 if (pid == -1)
@@ -59,4 +63,3 @@ free(cmd); /* Free the allocated memory for the command */
 
 return (0);
 }
-
