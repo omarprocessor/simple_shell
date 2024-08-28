@@ -31,3 +31,4 @@ hali = shughulikia_amri(amri);
 free(amri);
 return (0);
 }
+
