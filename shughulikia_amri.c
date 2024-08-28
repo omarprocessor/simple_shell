@@ -18,13 +18,19 @@ int i = 0;
 
 vigezo[i] = strtok(amri, " ");
 while (vigezo[i] != NULL)
+{
 vigezo[++i] = strtok(NULL, " ");
+}
 
 if (handle_exit(vigezo) == 0)
+{
 return (0);
+}
 
 if (handle_env(vigezo) == 1)
+{
 return (1);
+}
 
 return (handle_command_execution(vigezo));
 }
@@ -38,7 +44,10 @@ return (handle_command_execution(vigezo));
 int handle_exit(char **vigezo)
 {
 if (strcmp(vigezo[0], "exit") == 0)
+{
 return (0);
+}
+
 return (1);
 }
 
@@ -55,11 +64,12 @@ if (strcmp(vigezo[0], "env") == 0)
 chapisha_env();
 return (1);
 }
+
 return (0);
 }
 
 /**
- * handle_command_execution - Handles execution of a command
+ * handle_command_execution - Handles execution of a command with arguments
  * @vigezo: Array of command arguments
  *
  * Return: 1 to continue the shell loop
@@ -67,20 +77,64 @@ return (0);
 int handle_command_execution(char **vigezo)
 {
 char *programu;
+pid_t child_pid;
+int status;
+
+if (vigezo[0] == NULL)
+{
+return (1);
+}
 
 if (access(vigezo[0], X_OK) == 0)
-tekeleza_amri(vigezo[0], vigezo);
+{
+child_pid = fork();
+if (child_pid == -1)
+{
+perror("fork");
+return (1);
+}
+
+if (child_pid == 0)
+{
+execve(vigezo[0], vigezo, environ);
+perror("execve");
+exit(EXIT_FAILURE);
+}
+else
+{
+waitpid(child_pid, &status, 0);
+}
+}
 else
 {
 programu = tafuta_njia(vigezo[0]);
 if (programu != NULL)
 {
-tekeleza_amri(programu, vigezo);
+child_pid = fork();
+if (child_pid == -1)
+{
+perror("fork");
+return (1);
+}
+
+if (child_pid == 0)
+{
+execve(programu, vigezo, environ);
+perror("execve");
+exit(EXIT_FAILURE);
+}
+else
+{
+waitpid(child_pid, &status, 0);
+}
 free(programu);
 }
 else
+{
 printf("%s: command not found\n", vigezo[0]);
 }
+}
+
 return (1);
 }
 

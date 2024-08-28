@@ -15,7 +15,7 @@ int hali = 1;
 while (hali)
 {
 if (isatty(STDIN_FILENO))
-printf("#cisfun$ ");
+printf(":) ");
 saizi = getline(&amri, &urefu, stdin);
 if (saizi == -1)
 {
