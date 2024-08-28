@@ -5,6 +5,6 @@
  */
 void promptly(void)
 {
-chora("😊 ");
+chora("#cisfun$ ");
 }
 

@@ -25,7 +25,7 @@ else if (pid == 0)
 if (execve(cmd, argv, environ) == -1)
 {
 chora(cmd);
-chora(": Command not found\n");
+chora("./shell: No such file or directory\n");
 }
 exit(EXIT_FAILURE);
 }
