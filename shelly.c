@@ -7,7 +7,7 @@
  */
 int main(void)
 {
-prompt();
+promptly();
 return (0);
 }
 
