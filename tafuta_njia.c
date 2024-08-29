@@ -1,34 +1,45 @@
 #include "shelliyangu.h"
 
 /**
- * tafuta_njia - Finds the full path of the command
- * @amri: Command entered by the user
+ * tafuta_njia - Searches for a command in PATH directories
+ * @command: The command to find
  *
- * Return: Full path of the command or NULL if not found
+ * Return: Full path of the command if found, NULL otherwise
  */
-char *tafuta_njia(char *amri)
+char *tafuta_njia(char *command)
 {
-char *njia = getenv("PATH");
-char *njia_token;
-char full_path[1024];
+char *path_copy, *dir, *full_path;
+struct stat st;
+size_t len;
+char *paths = getenv("PATH");
 
-if (amri[0] == '/' || amri[0] == '.')
+if (!paths)
+return (NULL);
+
+path_copy = strdup(paths);
+if (!path_copy)
+return (NULL);
+
+dir = strtok(path_copy, ":");
+while (dir)
 {
-if (access(amri, X_OK) == 0)
-return (strdup(amri));
+len = strlen(dir) + strlen(command) + 2;
+full_path = malloc(len);
+if (!full_path)
+{
+free(path_copy);
 return (NULL);
 }
-
-njia_token = strtok(njia, ":");
-while (njia_token != NULL)
+snprintf(full_path, len, "%s/%s", dir, command);
+if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode) && (st.st_mode & S_IXUSR))
 {
-sprintf(full_path, "%s/%s", njia_token, amri);
-if (access(full_path, X_OK) == 0)
-return (strdup(full_path));
-njia_token = strtok(NULL, ":");
+free(path_copy);
+return (full_path);
 }
-
+free(full_path);
+dir = strtok(NULL, ":");
+}
+free(path_copy);
 return (NULL);
 }
-
 

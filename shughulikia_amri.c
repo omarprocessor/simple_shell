@@ -18,19 +18,13 @@ int i = 0;
 
 vigezo[i] = strtok(amri, " ");
 while (vigezo[i] != NULL)
-{
 vigezo[++i] = strtok(NULL, " ");
-}
 
 if (handle_exit(vigezo) == 0)
-{
 return (0);
-}
 
 if (handle_env(vigezo) == 1)
-{
 return (1);
-}
 
 return (handle_command_execution(vigezo));
 }
@@ -44,10 +38,7 @@ return (handle_command_execution(vigezo));
 int handle_exit(char **vigezo)
 {
 if (strcmp(vigezo[0], "exit") == 0)
-{
 return (0);
-}
-
 return (1);
 }
 
@@ -64,7 +55,6 @@ if (strcmp(vigezo[0], "env") == 0)
 chapisha_env();
 return (1);
 }
-
 return (0);
 }
 
@@ -81,9 +71,7 @@ pid_t child_pid;
 int status;
 
 if (vigezo[0] == NULL)
-{
 return (1);
-}
 
 if (access(vigezo[0], X_OK) == 0)
 {
@@ -134,7 +122,6 @@ else
 printf("%s: command not found\n", vigezo[0]);
 }
 }
-
 return (1);
 }
 
